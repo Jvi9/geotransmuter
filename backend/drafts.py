@@ -20,8 +20,8 @@ eoconn = openeo.connect(backend_url)
 eoconn.authenticate_oidc()
 
 # bbox = [5.0, 51.2, 5.1, 51.3]
-bbox = [-70.76863502690277, -13.114504346234398, -70.29464040882242, -12.673690153627575]
-year = 2024
+bbox = [-72.0339427207,-16.0174594097,-72.0269689773,-16.0112925486]
+year = 2019
 
 startdate = f"{year}-01-01"
 enddate = f"{year}-12-30"
@@ -30,8 +30,8 @@ s2_bands = eoconn.load_collection(
     "SENTINEL2_L2A",
     temporal_extent=[startdate, enddate],
     spatial_extent=dict(zip(["west", "south", "east", "north"], bbox)),
-    bands=["B04", "B08", "SCL"],
-    max_cloud_cover=20,
+    bands=["B02", "B03" ,"B04", "B07", "B08"], #, "SCL"
+    max_cloud_cover=5,
 )
 
 nb_of_timesteps = 12
@@ -124,25 +124,25 @@ ndvi_data.close()
 # spatial_extent = create_spatial_extent(coords)
 # print(spatial_extent)
 
-# connection = openeo.connect(url="openeo.dataspace.copernicus.eu")
-# connection.authenticate_oidc()
-# s2_cube = connection.load_collection(
-#     "SENTINEL2_L2A",
-#     temporal_extent=("2015-01-01", "2024-12-30"),
-#     spatial_extent={
-#         "west": -70.5448809103,
-#         "south": -13.0364308189,
-#         "east": -70.5062687748,
-#         "north": -13.0099624388,
-#         "crs": "EPSG:4326",
-#     },
-#     # bands=["B04"],
-#     bands=["B04", "B03", "B02", "B08","SCL"],
-#     max_cloud_cover=5,
-# )
+connection = openeo.connect(url="openeo.dataspace.copernicus.eu")
+connection.authenticate_oidc()
+s2_cube = connection.load_collection(
+    "SENTINEL2_L2A",
+    temporal_extent=("2019-01-01", "2019-12-30"),
+    spatial_extent={
+        "west": -70.5448809103,
+        "south": -13.0364308189,
+        "east": -70.5062687748,
+        "north": -13.0099624388,
+        "crs": "EPSG:4326",
+    },
+    # bands=["B04"],
+    bands=["B02", "B03" ,"B04", "B07", "B08"],
+    max_cloud_cover=5,
+)
 
-# #download
-# path= r"C:\Users\jvila\Desktop\geotransmuter\backend\data"
-# data_name = "pounds.nc"
-# full_path = os.path.join(path,data_name)
-# s2_cube.download(full_path)
+#download
+path= r"C:\Users\jvila\Desktop\geotransmuter\backend\data"
+data_name = "huasamayo.nc"
+full_path = os.path.join(path,data_name)
+s2_cube.download(full_path)

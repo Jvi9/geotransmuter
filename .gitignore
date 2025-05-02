@@ -1,0 +1,5 @@
+spyproject/
+.spyproject/config/
+backend/data/
+backend/endpoint/
+backend/basemap/
